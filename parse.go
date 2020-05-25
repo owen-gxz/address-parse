@@ -15,17 +15,17 @@ type AddressList struct {
 }
 
 func init() {
-	shipingAddress = make([]AddressList, 0)
+	shippingAddress = make([]AddressList, 0)
 	loadData()
 }
 
 func loadData() {
-	err := json.Unmarshal([]byte(data), &shipingAddress)
+	err := json.Unmarshal([]byte(data), &shippingAddress)
 	if err != nil {
 		panic(err)
 	}
 	// 记录简写
-	for _, item := range shipingAddress {
+	for _, item := range shippingAddress {
 		name := item.Name
 		for _, s := range provinceKey {
 			name = strings.ReplaceAll(name, s, "")
@@ -36,7 +36,7 @@ func loadData() {
 			for _, s := range cityKey {
 				name = strings.ReplaceAll(name, s, "")
 			}
-			citries[subItem.Name] = name
+			cities[subItem.Name] = name
 		}
 
 	}
@@ -55,14 +55,14 @@ type Address struct {
 }
 
 var (
-	shipingAddress []AddressList
-	search         = []string{"地址", "收货地址", "收货人", "收件人", "收货", "邮编", "电话", "：", ":", "；", ";", "，", ",", "。", " "}
-	provinceKey    = []string{"特别行政区", "古自治区", "维吾尔自治区", "壮族自治区", "回族自治区", "自治区", "省省直辖", "省", "市"}
+	shippingAddress []AddressList
+	search          = []string{"地址", "收货地址", "收货人", "收件人", "收货", "邮编", "电话", "：", ":", "；", ";", "，", ",", "。", " "}
+	provinceKey     = []string{"特别行政区", "古自治区", "维吾尔自治区", "壮族自治区", "回族自治区", "自治区", "省省直辖", "省", "市"}
 	// 存储省份简写
 	provinces = make(map[string]string)
 	cityKey   = []string{"布依族苗族自治州", "苗族侗族自治州", "自治州", "州", "市", "县"}
 	// 存储区简写
-	citries = make(map[string]string)
+	cities = make(map[string]string)
 )
 
 func Parse(address string) Address {
@@ -99,7 +99,7 @@ func Parse(address string) Address {
 
 // 正向解析
 func DetailParseForward(address string, p *Address) {
-	AddressRead(shipingAddress, p, address, 0, make([]string, 0))
+	AddressRead(shippingAddress, p, address, 0, make([]string, 0))
 }
 
 func AddressRead(al []AddressList, p *Address, address string, index int, repStr []string) {
@@ -108,7 +108,7 @@ func AddressRead(al []AddressList, p *Address, address string, index int, repStr
 		if index == 0 {
 			name = provinces[item.Name]
 		} else if index == 1 {
-			name = citries[item.Name]
+			name = cities[item.Name]
 		} else {
 			for _, k := range cityKey {
 				name = strings.ReplaceAll(name, k, "")
