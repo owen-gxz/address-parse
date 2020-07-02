@@ -2,7 +2,6 @@ package address_parse
 
 import (
 	"encoding/json"
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -95,7 +94,6 @@ func Parse(address string) Address {
 	reg = regexp.MustCompile(` {2,}`)
 	address=strings.Trim(address," ")
 	//address = reg.ReplaceAllString(address, " ")
-	fmt.Println(address)
 	DetailParseForward(address, &p)
 	return p
 }
